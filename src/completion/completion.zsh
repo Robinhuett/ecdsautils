@@ -1,0 +1,39 @@
+#compdef ecdsautil
+
+_ecdsautil_args() {
+  case $words[1] in
+    (sign)
+      _arguments '1:somefile:_files'
+      ;;
+    (verify)
+      _arguments '-s[signature]:secret:_files' '-p[publickey]:pubkey:_files' '-n[signaturecount]:signaturecount:""' ':file:_files'
+      ;;
+  esac
+}
+
+_ecdsautil() {
+  local -a commands
+
+  commands=(
+    "help:Show help"
+    "generate-key:generate a new secret on stdout"
+    "show-key:output public key of secret read from stdin"
+    "sign:sign file"
+    "verify:verify signature of file"
+  )
+
+  _arguments -C \
+    '1:cmd:->cmds' \
+    '*:: :->args' \
+
+  case "$state" in
+    (cmds)
+      _describe -t commands 'commands' commands
+      ;;
+    (*)
+      _ecdsautil_args
+      ;;
+  esac
+}
+
+_ecdsautil "$@"
