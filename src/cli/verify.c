@@ -90,7 +90,7 @@ int verify(const char *command, int argc, char **argv) {
 
   ecc_int256_t hash;
 
-  if (!sha256_file((optind <= argc) ? argv[optind] : NULL, hash.p)) {
+  if (!sha256_file(argv[optind], hash.p)) {
     fprintf(stderr, "Error while hashing file\n");
     goto out;
   }
